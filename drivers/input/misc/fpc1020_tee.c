@@ -412,10 +412,9 @@ static irqreturn_t fpc1020_irq_handler(int irq, void *handle)
 
 	smp_rmb();
 
-	if (!fpc1020->wakeup_enabled)
-		return IRQ_HANDLED;
-
-	wake_lock_timeout(&fpc1020->ttw_wl, msecs_to_jiffies(FPC_TTW_HOLD_TIME));
+	if (fpc1020->wakeup_enabled ) {
+		wake_lock_timeout(&fpc1020->ttw_wl, msecs_to_jiffies(FPC_TTW_HOLD_TIME));
+	}
 
 	sysfs_notify(&fpc1020->dev->kobj, NULL, dev_attr_irq.attr.name);
 
