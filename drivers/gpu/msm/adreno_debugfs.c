@@ -39,7 +39,7 @@ typedef void (*reg_read_fill_t)(struct kgsl_device *device, int i,
 	unsigned int *vals, int linec);
 
 #ifdef CONFIG_SYNC_DEBUG
-static void sync_event_print(struct seq_file *s,
+static void __maybe_unused sync_event_print(struct seq_file *s,
 		struct kgsl_cmdbatch_sync_event *sync_event)
 {
 	switch (sync_event->type) {
@@ -118,6 +118,8 @@ static void print_flags(struct seq_file *s, const struct flag_entry *table,
 
 static void cmdbatch_print(struct seq_file *s, struct kgsl_cmdbatch *cmdbatch)
 {
+#ifdef CONFIG_SYNC_DEBUG
+
 	struct kgsl_cmdbatch_sync_event *sync_event;
 
 	/*
@@ -140,6 +142,7 @@ static void cmdbatch_print(struct seq_file *s, struct kgsl_cmdbatch *cmdbatch)
 	}
 
 	spin_unlock_bh(&cmdbatch->lock);
+#endif
 
 	/* if this flag is set, there won't be an IB */
 	if (cmdbatch->flags & KGSL_CONTEXT_SYNC)
